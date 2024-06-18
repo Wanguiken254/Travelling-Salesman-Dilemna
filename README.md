@@ -1,2 +1,2 @@
 # Travelling-Salesman-Dilemna
-A python code that solves the travelling salesman dilemna
+A python code that solves the travelling salesman dilemna.
