@@ -11,7 +11,7 @@ distance_matrix = {
 }
 
 # setting average speed and fuel consumption
-average_speed = 80  #  speed in km/h
+average_speed = 80  # speed in km/h
 fuel_consumption = 12.6  # consumption in km/l
 petrol_price = 199.15  # price in shillings/liter
 
@@ -26,8 +26,8 @@ def calculate_total_distance(route):
         origin = route[i]
         destination = route[i + 1]
         distance += distance_matrix[origin][destination]
-         #return to Nairobi
-    distance += distance_matrix[route[-1]][route[0]] 
+    # return to Nairobi
+    distance += distance_matrix[route[-1]]["Nairobi"]
     return distance
 
 def calculate_total_time(route):
@@ -47,7 +47,7 @@ def calculate_fuel_cost(distance):
     return round(fuel_amount * petrol_price, 2)  
 
 def find_shortest_route(cities):
-    """Finds the shortest route using nearest neighbor heuristic"""
+    """Finds the shortest route using permutations"""
     shortest_distance = float("inf")
     shortest_route = None
     shortest_time = None
@@ -60,7 +60,13 @@ def find_shortest_route(cities):
             shortest_time = route_time
     return shortest_route, shortest_distance, shortest_time
 
-# listing countries
+def generate_google_maps_url(route):
+    """Generates a Google Maps URL for the given route"""
+    base_url = "https://www.google.com/maps/dir/"
+    waypoints = "/".join(route)
+    return f"{base_url}Nairobi/{waypoints}/Nairobi"
+
+# listing counties
 counties = ["Nyeri", "Nakuru", "Laikipia", "Nandi", "Meru"]
 
 # find shortest route and distance
@@ -70,9 +76,13 @@ shortest_route, shortest_distance, shortest_time = find_shortest_route(counties)
 fuel_amount = calculate_fuel_amount(shortest_distance)
 fuel_cost = calculate_fuel_cost(shortest_distance)
 
+# generate Google Maps URL
+google_maps_url = generate_google_maps_url(shortest_route)
+
 # print the results with formatting for decimal places
 print("Shortest Route:", shortest_route)
 print("Total Distance:", "{:.1f}".format(shortest_distance), "km")
-print("Total Travel Time:", shortest_time, "hours")
+print("Total Travel Time:", "{:.1f}".format(shortest_time), "hours")
 print("Fuel Amount Needed:", "{:.4f}".format(fuel_amount), "liters")
 print("Fuel Cost:", "{:.2f}".format(fuel_cost), "shillings")
+print("Google Maps Directions:", google_maps_url)
